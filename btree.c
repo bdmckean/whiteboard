@@ -41,8 +41,29 @@ void * popq(){
 	
 	tmp = q;
 	if ( tmp->next != NULL) {
+		q = tmp->next;
+	} else {
+		// About to free the root
+		q = NULL;
+	}
+	info = tmp->info;
+	free (tmp);
+	qcount--;
+	return info;
+}
+void * popq_stack(){
+	void * info;
+	struct q * tmp;
+	
+	if ( q == NULL) return NULL;
+	
+	tmp = q;
+	if ( tmp->next != NULL) {
 		while ( tmp->next != NULL) tmp = tmp->next;
 		tmp->prev->next = NULL;
+	} else {
+		// About to free the root
+		q = NULL;
 	}
 	info = tmp->info;
 	free (tmp);
@@ -68,7 +89,7 @@ struct btree_node * make_btree(int num_nodes, int seed, int prob_leaf)
 	if (num_nodes < 1 ) return NULL;
 
 	tmp = (struct btree_node * )malloc(sizeof(struct btree_node));
-	tmp->value = rand();
+	tmp->value = rand()%1000;
 	tmp->right = tmp->left = tmp->parent = NULL;
 
 	root = tmp;
@@ -76,15 +97,16 @@ struct btree_node * make_btree(int num_nodes, int seed, int prob_leaf)
 	
 	nodes = 1;	
 	// root is set up
-	while(nodes < num_nodes) {
+	while(nodes < num_nodes && qelem() ) {
 		tmp = popq();
 		
+	
 		tmp2 = NULL;
 		tmp3 = NULL;
 		// Set up leaf nodes -- mabe	
 		if ( rand()%100 < prob_leaf ){
 			tmp2 = (struct btree_node * )malloc(sizeof(struct btree_node));	
-			tmp2->value =  rand();
+			tmp2->value =  rand()%1000;
 			tmp2->parent = tmp;
 			tmp2->left = tmp2->right = NULL;
 			pushq(tmp2);
@@ -92,7 +114,7 @@ struct btree_node * make_btree(int num_nodes, int seed, int prob_leaf)
 		}
 		if ( rand()%100 < prob_leaf ){
 			tmp3 = (struct btree_node * )malloc(sizeof(struct btree_node));
-			tmp3->value =  rand();
+			tmp3->value =  rand()%1000;
 			tmp3->parent = tmp;
 			tmp3->left = tmp3->right = NULL;
 			pushq(tmp3);
@@ -132,6 +154,7 @@ void print_tree(struct btree_node * b)
 	int x,y;
 
 	if (!b ) return;
+	printf("Print tree \n");
 	while (1) {
 		x = y = -1;
 		if ( b->left ) { pushq( b->left); x = b->left->value;}
@@ -143,5 +166,6 @@ void print_tree(struct btree_node * b)
 			break;
 		}
 	}
+	fflush(stdout);
 
 }
