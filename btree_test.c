@@ -9,7 +9,7 @@ int main(int argc, char ** arcgv)
 	tree = make_btree(1, 1, 90);
 	print_tree(tree);
 	delete_tree(tree);
-
+	
 	tree = make_btree(3, 1, 90);
 	print_tree(tree);
 	delete_tree(tree);
@@ -18,7 +18,7 @@ int main(int argc, char ** arcgv)
 	print_tree(tree);
 	delete_tree(tree);
 
-	tree = make_btree(40, 4, 70);
+	tree = make_btree(40, 1, 80);
 	print_tree(tree);
 	delete_tree(tree);
 

@@ -4,6 +4,7 @@ a.out.dSYM
 whiteboard.sublime-project
 whiteboard.sublime-workspace
 .meta*
+btree_test
 
 # Compiled source #
 ###################
